@@ -1,25 +1,45 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Webcam from 'react-webcam';
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Webcam />
+      </div>
+    );
+  }
+}
+
+class WebcamCapture extends React.Component {
+  setRef = webcam => {
+    this.webcam = webcam;
+  };
+ 
+  capture = () => {
+    const imageSrc = this.webcam.getScreenshot();
+  };
+ 
+  render() {
+    const videoConstraints = {
+      width: 1280,
+      height: 720,
+      facingMode: "user"
+    };
+ 
+    return (
+      <div>
+        <Webcam
+          audio={false}
+          height={350}
+          ref={this.setRef}
+          screenshotFormat="image/jpeg"
+          width={350}
+          videoConstraints={videoConstraints}
+        />
+        <button onClick={this.capture}>Capture photo</button>
       </div>
     );
   }

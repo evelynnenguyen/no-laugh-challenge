@@ -38,7 +38,7 @@ class WebcamCapture extends React.Component {
 
   
   fetchData = async (byteArray) => {
-    const apiKey = '022279c219444877b2491814b1b1c9ac';
+    const apiKey = '[API-Key]';
     // const apiEndpoint = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceId=true&returnFaceLandmarks=false&recognitionModel=recognition_01&returnRecognitionModel=false';
     const temp = 'https://australiaeast.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceAttributes=emotion'
     await fetch(temp, {
@@ -71,7 +71,7 @@ class WebcamCapture extends React.Component {
       const image = this.capture();
       const byteArrayImage = this.convertToByteArray(image);
       this.fetchData(byteArrayImage);
-    }, 150);
+    }, 200);
   };
 
   convertToByteArray = (image) => {

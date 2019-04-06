@@ -93,6 +93,14 @@ export default Title
 ```
 
 ### Video.js
+
+This video component will define the video wrapper which will get the video from the url that we put into App.js, map it over to Video.js and play it.
+
+`.propTypes` give the current component a property of PropTypes equals to an object. This object will have as many PropTypes as the amount of props that be passed on the current component.
+
+In this case Video component will have one PropTypes called `posts`, which is an mandatory PropTypes of an object; i.e. whatever prop in the form of posts from the component instance must be an object.  
+ `.isRequired` means that if there is no post being passed into our `Displayer` component, throw a big error!
+
 ```javascript
 import React from 'react'
 import propTypes from 'prop-types'
@@ -117,6 +125,11 @@ export default Video
 ```
 
 ### Displayer.js
+
+In this case `Displayer` will have one PropTypes called `posts`, which is an mandatory PropTypes of an array; i.e. whatever prop in the form of posts from the component instance must be an array.  
+`.isRequired` means that if there is no post being passed into our `Displayer` component, throw a big error!
+
+
 ```javascript
 import React from 'react'
 import ReactPlayer from 'react-player'
@@ -235,6 +248,8 @@ export default App;
 ```
 
 ### index.js
+
+Now, we need to import ReactDOM, App, stylesheet, and {BrowserRouter} into index.js and wrap `<App/>` with `<BrowserRouter>` and `</BrowserRouter>`. Be careful that there **must not** be any space between `<BrowserRouter><App/></BrowserRouter>`
 
 ```javascript
 import React from 'react'

@@ -7,24 +7,12 @@ class MyWebcam extends React.Component {
         this.webcam = webcam;
     };
 
-    fetchData = async (byteArray) => {
-        const apiKey = '022279c219444877b2491814b1b1c9ac';
-        const apiEndpoint = 'https://australiaeast.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceAttributes=emotion'
-        await fetch(apiEndpoint, {
-            body: byteArray,
-            headers: {
-                'cache-control': 'no-cache', 'Ocp-Apim-Subscription-Key': apiKey, 'Content-Type': 'application/octet-stream'
-            },
-            method: 'POST'
-        }).then(response => {
-            if (response.ok) {
-                response.json().then(data => {
-                        const happiness = (data[0] != null ? data[0].faceAttributes.emotion.happiness : "0");
-                        this.props.onReceivedResult(happiness);
-                });
-            }
-        });
-    }
+    // capture = () => {
+    //     console.log('capturing');
+    //     const image = this.webcam.getScreenshot();
+    //     const byteArrayImage = this.convertToByteArray(image);
+    //     this.fetchData(byteArrayImage);
+    // };
 
     startCapturing = () => {
         setInterval(() => {
@@ -39,6 +27,25 @@ class MyWebcam extends React.Component {
         const base64string = image.split(',')[1];
         return base64.toByteArray(base64string)
     };
+
+    fetchData = (byteArray) => {
+        const apiKey = '022279c219444877b2491814b1b1c9ac';
+        const apiEndpoint = 'https://australiaeast.api.cognitive.microsoft.com/face/v1.0/detect?returnFaceAttributes=emotion'
+        fetch(apiEndpoint, {
+            body: byteArray,
+            headers: {
+                'cache-control': 'no-cache', 'Ocp-Apim-Subscription-Key': apiKey, 'Content-Type': 'application/octet-stream'
+            },
+            method: 'POST'
+        }).then(response => {
+            if (response.ok) {
+                response.json().then(data => {
+                    const happiness = (data[0] != null ? data[0].faceAttributes.emotion.happiness : "0");
+                    this.props.onReceivedResult(happiness);
+                });
+            }
+        });
+    }
 
     render() {
         const videoConstraints = {

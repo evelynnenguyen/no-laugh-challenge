@@ -17,33 +17,27 @@ class MyWebcam extends React.Component {
             },
             method: 'POST'
         }).then(response => {
-            try {
+            if (response.ok) {
                 response.json().then(data => {
-                    const happiness = data[0].faceAttributes.emotion.happiness;
-                    this.props.onReceivedResult(happiness);
+                        const happiness = (data[0] != null ? data[0].faceAttributes.emotion.happiness : "0");
+                        this.props.onReceivedResult(happiness);
                 });
-            } catch (err) {
-                console.log(err);
             }
         });
     }
 
     startCapturing = () => {
         setInterval(() => {
-            const image = this.capture();
+            const image = this.webcam.getScreenshot();
             const byteArrayImage = this.convertToByteArray(image);
             this.fetchData(byteArrayImage);
-        }, 50);
+        }, 150);
     };
 
     convertToByteArray = (image) => {
         const base64 = require('base64-js');
         const base64string = image.split(',')[1];
         return base64.toByteArray(base64string)
-    };
-
-    capture = () => {
-        return this.webcam.getScreenshot();
     };
 
     render() {

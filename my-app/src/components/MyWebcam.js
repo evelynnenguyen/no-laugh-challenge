@@ -52,20 +52,22 @@ class MyWebcam extends React.Component {
 
     render() {
         const videoConstraints = {
-            width: 1280,
-            height: 720,
+            width: 750,
+            height: 500,
             facingMode: "user"
         };
         return (
             <div>
-                <Webcam
-                    audio={false}
-                    height={500}
-                    width={500}
-                    ref={this.setRef}
-                    screenshotFormat="image/jpeg"
-                    videoConstraints={videoConstraints} 
+                <div>
+                    <Webcam
+                        audio={false}
+                        height={500}
+                        width={750}
+                        ref={this.setRef}
+                        screenshotFormat="image/jpeg"
+                        videoConstraints={videoConstraints}
                     />
+                </div>
                 <button onClick={this.startAnalysis}>Start Game</button>
                 <button onClick={() => clearInterval(this.timerId)}>Stop Game</button>
             </div>

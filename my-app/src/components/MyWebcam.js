@@ -2,25 +2,27 @@ import React from 'react';
 import Webcam from 'react-webcam';
 
 class MyWebcam extends React.Component {
+    constructor(props) {
+        super(props);
+        this.timerId = null;
+    }
 
     setRef = webcam => {
         this.webcam = webcam;
     };
 
-    // capture = () => {
-    //     console.log('capturing');
-    //     const image = this.webcam.getScreenshot();
-    //     const byteArrayImage = this.convertToByteArray(image);
-    //     this.fetchData(byteArrayImage);
-    // };
 
-    startCapturing = () => {
-        setInterval(() => {
+    stop = () => {
+        clearInterval(this.myVar);
+    }
+
+    startAnalysis = () => {
+        this.timerId = setInterval(() => {
             const image = this.webcam.getScreenshot();
             const byteArrayImage = this.convertToByteArray(image);
             this.fetchData(byteArrayImage);
         }, 150);
-    };
+    }
 
     convertToByteArray = (image) => {
         const base64 = require('base64-js');
@@ -40,7 +42,8 @@ class MyWebcam extends React.Component {
         }).then(response => {
             if (response.ok) {
                 response.json().then(data => {
-                    const happiness = (data[0] != null ? data[0].faceAttributes.emotion.happiness : "0");
+                    const happiness = +(data[0] != null ? data[0].faceAttributes.emotion.happiness : "0");
+                    if (happiness === 1) clearInterval(this.timerId);
                     this.props.onReceivedResult(happiness);
                 });
             }
@@ -57,12 +60,14 @@ class MyWebcam extends React.Component {
             <div>
                 <Webcam
                     audio={false}
-                    height={1000}
-                    width={1000}
+                    height={500}
+                    width={500}
                     ref={this.setRef}
                     screenshotFormat="image/jpeg"
-                    videoConstraints={videoConstraints} />
-                <button onClick={this.startCapturing}>Start Game</button>
+                    videoConstraints={videoConstraints} 
+                    />
+                <button onClick={this.startAnalysis}>Start Game</button>
+                <button onClick={() => clearInterval(this.timerId)}>Stop Game</button>
             </div>
         );
     }

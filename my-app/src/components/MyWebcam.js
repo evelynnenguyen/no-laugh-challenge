@@ -1,22 +1,20 @@
 import React from 'react';
 import Webcam from 'react-webcam';
+import Button from 'react-bootstrap/Button';
 
 class MyWebcam extends React.Component {
     constructor(props) {
         super(props);
         this.timerId = null;
+        this.isCapturing = false;
     }
 
     setRef = webcam => {
         this.webcam = webcam;
     };
 
-
-    stop = () => {
-        clearInterval(this.myVar);
-    }
-
-    startAnalysis = () => {
+    startCapturing = () => {
+        this.isCapturing = true;
         this.timerId = setInterval(() => {
             const image = this.webcam.getScreenshot();
             const byteArrayImage = this.convertToByteArray(image);
@@ -42,9 +40,17 @@ class MyWebcam extends React.Component {
         }).then(response => {
             if (response.ok) {
                 response.json().then(data => {
-                    const happiness = +(data[0] != null ? data[0].faceAttributes.emotion.happiness : "0");
-                    if (happiness === 1) clearInterval(this.timerId);
-                    this.props.onReceivedResult(happiness);
+                    var happiness = (data[0] != null ? data[0].faceAttributes.emotion.happiness : 0);
+                    happiness = (Math.round(happiness * 100))
+                    if (this.isCapturing && happiness < 100) {
+                        this.props.onReceivedResult(happiness);
+                    } else {
+                        clearInterval(this.timerId);
+                        this.isCapturing = false;
+                        this.props.onReceivedResult(100);
+                    }
+                    // if (happiness === 1) clearInterval(this.timerId);
+                    // this.props.onReceivedResult(happiness);
                 });
             }
         });
@@ -68,8 +74,7 @@ class MyWebcam extends React.Component {
                         videoConstraints={videoConstraints}
                     />
                 </div>
-                <button onClick={this.startAnalysis}>Start Game</button>
-                <button onClick={() => clearInterval(this.timerId)}>Stop Game</button>
+                <Button variant="primary" onClick={this.startCapturing}>Start Game!</Button>
             </div>
         );
     }

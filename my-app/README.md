@@ -1,4 +1,4 @@
-# Implementing Video Player
+# Implementing Video Player Component
 ## Getting started
 Firstly, check that if you have node and npm installed.  
 To check if you have Node.js installed, run this command in your terminal:  

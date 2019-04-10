@@ -3,47 +3,35 @@ import './Components/stylesheet.css'
 import Displayer from './Components/Displayer'
 import Title from './Components/Title'
 import AddVideo from './Components/AddVideo'
-import {Route} from 'react-router-dom'
 
 class App extends Component {
-  constructor(){
-    super()
-    this.state = {
-        posts: [{
-            id: 0,
-            videoLink: ""
+    constructor() {
+        super()
+        this.state = {
+            posts: [{
+                id: 0,
+                videoLink: ""
             }]
+        }
     }
-}
 
-addVideo(postSubmitted) {
-    this.setState(state => ({
-        posts: [postSubmitted]
-    }))
-}
+    addVideo(postSubmitted) {
+        this.setState(state => ({
+            posts: [postSubmitted]
+        }))
+    }
 
-render () {
-    console.log(this.state.posts)
-    return (<div>
-        <Route exact path = "/" render={() => (
-            <div>
-                <Title title = {'No-Laugh Challenge'}/>
-                <Displayer posts = {this.state.posts} onNavigate = {this.navigate}/>
-            </div>
-        )}/>
-
-        <Route path= "/AddVideo" render = {({history}) => (
-            <div>
-              <AddVideo onAddVideo={(addedPost) => {
-                  console.log(addedPost)
-                  this.addVideo(addedPost)
-                  history.push('./')
-              }}/>
-            </div>
-        )}/>
-    </div>
-    )
-}
+    render() {
+        return (<div>
+            <Title title={'No-Laugh Challenge'} />
+            <Displayer posts={this.state.posts} onNavigate={this.navigate} />
+            <AddVideo onAddVideo={(addedPost) => {
+                console.log(addedPost)
+                this.addVideo(addedPost)
+            }}/>
+        </div>
+        )
+    }
 }
 
 export default App;

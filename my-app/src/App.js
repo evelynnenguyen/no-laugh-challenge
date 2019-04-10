@@ -22,16 +22,6 @@ addVideo(postSubmitted) {
     }))
 }
 
-componentDidMount() {
-}
-
-// this get called whenever the component is re-rendered
-componentDidUpdate(prevProps, prevState) {
-    // alert('re-render')
-    console.log(prevState.posts)
-    console.log(this.state)
-}
-
 render () {
     console.log(this.state.posts)
     return (<div>

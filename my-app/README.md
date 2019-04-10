@@ -1,68 +1,272 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Implementing Video Player
+## Getting started
+Firstly, check that if you have node and npm installed.  
+To check if you have Node.js installed, run this command in your terminal:  
+`node -v`  
+To confirm that you have npm installed you can run this command in your terminal:  
+`npm -v`
 
-## Available Scripts
+If you don't have npm or Node.js, download and install npm and Node.js [here.](https://www.npmjs.com/get-npm)  
+You’ll need to have Node 8.10.0 or later on your local development machine.
 
-In the project directory, you can run:
+## Create React App
+To create a new app, we choose to use `npm` method.
 
-### `npm start`
+In your terminal, navigate to the destination folder that you want to create your application. type in the following command:
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+```npm init react-app my-app```  
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+(_`npm init <initializer>`_ is available in `npm` 6+)
 
-### `npm test`
+It will create a directory called my-app inside the current folder.
+Inside that directory, it will generate the initial project structure and install the transitive dependencies:
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+my-app
+├── README.md
+├── node_modules
+├── package.json
+├── .gitignore
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   └── manifest.json
+└── src
+    ├── App.css
+    ├── App.js
+    ├── App.test.js
+    ├── index.css
+    ├── index.js
+    ├── logo.svg
+    └── serviceWorker.js
+```
+## Running the app
+Once installation is done, navigate to your project folder:  
+```npm start```  
+Then open http://localhost:3000/ to see your app.
 
-### `npm run build`
+Now you are good to go to the next step building your own React App by editing src/App.js
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Installing packages
+There are many existing packages (libraries) that we can utilize to create cool components of own React application. In order to implement video components, we will use `react-player`, `react-router-dom` and `prop-types`.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+If your app is still running, press `ctrl+C` (Windows) or `command+C` (MacOS) in your terminal. Make sure you are in you project folder 'my-app'. Let's install:
+1. [react-player](https://www.npmjs.com/package/react-player)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```npm install react-player --save```
 
-### `npm run eject`
+This will enable you to display and control components related to video in your React application.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+2. [react-router-dom](https://www.npmjs.com/package/react-router-dom)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```npm install --save react-router-dom```
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+React-router is used for navigation purposes in a react application.  
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+3. [prop-types](https://www.npmjs.com/package/prop-types)
 
-## Learn More
+```npm install --save prop-types```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+PropTypes was originally exposed as part of the React core module, and is commonly used with React components. It helps you to catch bugs and serves as a handy documentation on how a component has to be used in terms of passing props.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Implementing video player
 
-### Code Splitting
+In folder **src**, create a folder named **Components** containing files named `Title.js`, `Video.js`, `Displayer.js`, and `AddVideo.js`.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+### App.js
 
-### Analyzing the Bundle Size
+Firstly, in App.js, we will have `render()` method to display all of our components on our application.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+Secondly, `constructor()`, `addVideo()` to handle the action of passing an url and mapping it through `Video.js` and `Displayer.js`, which is called **state management** in React.
 
-### Making a Progressive Web App
+Now add the following code inside your `App.js`:
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+```javascript
+import React, { Component } from 'react'
+import './Components/stylesheet.css'
+import Displayer from './Components/Displayer'
+import Title from './Components/Title'
+import AddVideo from './Components/AddVideo'
+import {Route} from 'react-router-dom'
 
-### Advanced Configuration
+class App extends Component {
+  constructor(){
+    super()
+    this.state = {
+        posts: [{
+            id: 0,
+            videoLink: ""
+            }]
+    }
+}
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+addVideo(postSubmitted) {
+    this.setState(state => ({
+        posts: [postSubmitted]
+    }))
+}
 
-### Deployment
+render () {
+    console.log(this.state.posts)
+    return (<div>
+        <Route exact path = "/" render={() => (
+            <div>
+                <Title title = {'No-Laugh Challenge'}/>
+                <Displayer posts = {this.state.posts} onNavigate = {this.navigate}/>
+            </div>
+        )}/>
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+        <Route path= "/AddVideo" render = {({history}) => (
+            <div>
+              <AddVideo onAddVideo={(addedPost) => {
+                  console.log(addedPost)
+                  this.addVideo(addedPost)
+                  history.push('./')
+              }}/>
+            </div>
+        )}/>
+    </div>
+    )
+}
+}
 
-### `npm run build` fails to minify
+export default App;
+```
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+### Title.js
+
+`Title.js` will render the title name which is passed in as a prop to `App.js`.   
+Using `this.props.title` (PropTypes) allows us to change title name to whatever we want by simply change the title value in App.js, i.e. without changing anything in the individual component file itself.
+
+```javascript
+import React, {Component} from 'react';
+
+class Title extends Component {
+    render() {
+        return (
+            <h1> {this.props.title} </h1>
+        )
+    }
+}
+
+export default Title
+```
+
+### Video.js
+
+This video component will define the video wrapper which will get the video from the url that we put into App.js, map it over to Video.js and play it.
+
+`.propTypes` give the current component a property of PropTypes equals to an object. This object will have as many PropTypes as the amount of props that be passed on the current component.
+
+In this case Video component will have one PropTypes called `posts`, which is an mandatory PropTypes of an object; i.e. whatever prop in the form of posts from the component instance must be an object.  
+ `.isRequired` means that if there is no post being passed into our `Displayer` component, throw a big error!
+
+```javascript
+import React from 'react'
+import propTypes from 'prop-types'
+import ReactPlayer from 'react-player'
+
+function Video(props) {
+    const post = props.post
+        return <div className = "video-wrapper">            
+            <ReactPlayer className = "video"
+            url = {post.videoLink}
+            playing
+            controls
+            />
+        </div>
+}
+
+Video.propTypes = {
+    post: propTypes.object.isRequired
+}
+
+export default Video
+```
+
+### Displayer.js
+
+In this case `Displayer` will have one PropTypes called `posts`, which is an mandatory PropTypes of an array; i.e. whatever prop in the form of posts from the component instance must be an array.  
+`.isRequired` means that if there is no post being passed into our `Displayer` component, throw a big error!
+
+
+```javascript
+import React from 'react'
+import ReactPlayer from 'react-player'
+import PropTypes from 'prop-types'
+import {Link} from 'react-router-dom'
+import Video from './Video'
+
+function Displayer(props) {
+  return <div>
+      <Link className = "addIcon" to="AddVideo"></Link>
+      <div>
+          {props.posts.map((post, index) => <Video key = {index} post = {post}/>)}
+      </div>
+  </div>
+}
+
+Displayer.propTypes = {
+  posts: PropTypes.array.isRequired
+}
+
+export default Displayer
+```
+
+### AddVideo.js
+This component will handle the action of url input. It has one textbox for url and a button `Play` to submit the video link. This will change the state on our App.js and the `addVideo()` function will handle it, map it to Video.js, then to Displayer.js and display it through render() method in App.js
+
+```javascript
+import React, {Component} from 'react'
+
+class AddVideo extends Component {
+
+    constructor() {
+        super()
+        this.handleSubmit = this.handleSubmit.bind(this)
+    }
+
+    handleSubmit(event) {
+        event.preventDefault();
+        const videoLink = event.target.elements.link.value
+        const post = {
+            id: Number(new Date()),
+            videoLink: videoLink
+        }
+        if (videoLink){
+            this.props.onAddVideo(post)
+        }
+    }
+
+    render() {
+        return (
+            <div>
+                <h1> No-Laugh Challenge </h1>
+                <div className="form">
+                    <form onSubmit={this.handleSubmit}>
+                        <input type = "text" placeholder="Link" name="link"/>
+                        <button> Play </button>
+                    </form>
+                </div>
+            </div>
+        )
+    }
+}
+
+export default AddVideo
+```
+
+### index.js
+
+Now, we need to import ReactDOM, App, stylesheet, and {BrowserRouter} into index.js and wrap `<App/>` with `<BrowserRouter>` and `</BrowserRouter>`. Be careful that there **must not** be any space between `<BrowserRouter><App/></BrowserRouter>`
+
+```javascript
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './App'
+import './Components/stylesheet.css'
+import {BrowserRouter} from 'react-router-dom'
+
+ReactDOM.render(<BrowserRouter><App/></BrowserRouter>, document.getElementById('root'));
+```
+Now you are good to go to next part: **Implement the cognitive service**

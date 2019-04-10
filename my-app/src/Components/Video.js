@@ -4,8 +4,8 @@ import ReactPlayer from 'react-player'
 
 function Video(props) {
     const post = props.post
-        return <div className = "video-wrapper">            
-            <ReactPlayer className = "video"
+        return <div>            
+            <ReactPlayer
             url = {post.videoLink}
             playing
             controls

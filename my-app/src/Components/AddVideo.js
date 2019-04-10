@@ -20,12 +20,14 @@ class AddVideo extends Component {
 
     render() {
         return (
+            <h1>
                 <div className="form">
                     <form onSubmit={this.handleSubmit}>
-                        <input type = "text" placeholder="Link" name="link"/>
+                        <input type="text" placeholder="Link" name="link" />
                         <button> Play </button>
                     </form>
                 </div>
+            </h1>
         )
     }
 }

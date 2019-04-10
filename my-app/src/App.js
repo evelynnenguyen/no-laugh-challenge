@@ -9,7 +9,6 @@ class App extends Component {
         super()
         this.state = {
             posts: [{
-                id: 0,
                 videoLink: ""
             }]
         }

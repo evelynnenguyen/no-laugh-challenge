@@ -11,7 +11,6 @@ class AddVideo extends Component {
         event.preventDefault();
         const videoLink = event.target.elements.link.value
         const post = {
-            id: Number(new Date()),
             videoLink: videoLink
         }
         if (videoLink){

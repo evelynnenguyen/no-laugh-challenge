@@ -25,7 +25,6 @@ class App extends Component {
             <Title title={'No-Laugh Challenge'} />
             <Displayer posts={this.state.posts}/>
             <AddVideo onAddVideo={(addedPost) => {
-                console.log(addedPost)
                 this.addVideo(addedPost)
             }}/>
         </div>

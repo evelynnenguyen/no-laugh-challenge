@@ -4,7 +4,7 @@ import Video from './Video'
 
 function Displayer(props) {
   return <div>
-    {props.posts.map((post, index) => <Video post={post} />)}
+    {props.posts.map((post) => <Video post={post} />)}
   </div>
 }
 

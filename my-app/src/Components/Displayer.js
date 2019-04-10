@@ -1,5 +1,4 @@
 import React from 'react'
-import ReactPlayer from 'react-player'
 import PropTypes from 'prop-types'
 import Video from './Video'
 

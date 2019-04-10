@@ -1,38 +1,14 @@
-html {
-    font-size: 10px;
-    font-family: sans-serif;
-   }
-  
-   p {
-    font-size: 1.6rem;
-    line-height: 1.5;
-   }
   
    h1 {
-    width: 100%;
-    font-family: billabong, 'billabongregular';
     text-align: center;
-    font-weight: 100;
-    margin: 2rem 0;
-    letter-spacing: -1px;
-    color: black;
-    text-decoration: none;
    }
   
-.addIcon {
-    background: url("https://image.flaticon.com/icons/svg/60/60740.svg") center no-repeat;
-    background-size: contain;
-    padding: 40px;
-    display: table;
-    margin: 20px auto;
-    border: none;
-   }
-
 .video-wrapper {
     position: relative;
-    padding-bottom: 56.25%; /*16:9*/
+    padding-bottom: 56.25%;
     padding-top: 30px; 
     height: 0; 
+    border: 1px solid #d3d3d3;
     overflow: hidden;
 }
 

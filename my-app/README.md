@@ -50,7 +50,7 @@ Then open http://localhost:3000/ to see your app.
 Now you are good to go to the next step building your own React App by editing src/App.js
 
 ## Installing packages
-There are many existing packages (libraries) that we can utilize to create cool components of own React application. In order to implement video components, we will use `react-player`, `react-router-dom` and `prop-types`.
+There are many existing packages (libraries) that we can utilize to create cool components of own React application. In order to implement video components, we will use `react-player` and `prop-types`.
 
 If your app is still running, press `ctrl+C` (Windows) or `command+C` (MacOS) in your terminal. Make sure you are in you project folder 'my-app'. Let's install:
 1. [react-player](https://www.npmjs.com/package/react-player)
@@ -83,16 +83,18 @@ import Title from './Components/Title'
 import AddVideo from './Components/AddVideo'
 
 class App extends Component {
-    render() {
-        return (<div>
-            <Title title={'No-Laugh Challenge'} />
-            <Displayer posts={this.state.posts}/>
-            <AddVideo onAddVideo={(addedPost) => {
-                this.addVideo(addedPost)
-            }}/>
-        </div>
-        )
-    }
+  render() {
+      return (<div>
+          <Title title={'No-Laugh Challenge'} />
+          <AddVideo onAddVideo={(addedPost) => {
+              this.addVideo(addedPost)
+          }}/>
+          <div className = "video-wrapper">
+              <Displayer posts={this.state.posts} />
+          </div>
+      </div>
+      )
+  }
 }
 
 export default App;
@@ -155,8 +157,8 @@ import ReactPlayer from 'react-player'
 
 function Video(props) {
     const post = props.post
-        return <div className = "video-wrapper">            
-            <ReactPlayer className = "video"
+        return <div>            
+            <ReactPlayer
             url = {post.videoLink}
             playing
             controls
@@ -185,7 +187,7 @@ import Video from './Video'
 
 function Displayer(props) {
   return <div>
-    {props.posts.map((post) => <Video post={post}/>)}
+    {props.posts.map((post) => <Video post={post} />)}
   </div>
 }
 
@@ -200,7 +202,7 @@ export default Displayer
 This component will handle the action of url input. It has one textbox for url and a button `Play` to submit the video link. This will change the state on our App.js and the `addVideo()` function in `App.js` will handle it, map it to Video.js, then to Displayer.js and display it through render() method in App.js
 
 ```javascript
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 
 class AddVideo extends Component {
 
@@ -215,19 +217,21 @@ class AddVideo extends Component {
         const post = {
             videoLink: videoLink
         }
-        if (videoLink) {
+        if (videoLink){
             this.props.onAddVideo(post)
         }
     }
 
     render() {
         return (
-            <div className="form">
-                <form onSubmit={this.handleSubmit}>
-                    <input type="text" placeholder="Link" name="link" />
-                    <button> Play </button>
-                </form>
-            </div>
+            <h1>
+                <div className="form">
+                    <form onSubmit={this.handleSubmit}>
+                        <input type="text" placeholder="Link" name="link" />
+                        <button> Play </button>
+                    </form>
+                </div>
+            </h1>
         )
     }
 }
@@ -243,8 +247,39 @@ Now, we need to import `ReactDOM`, `App`, and `stylesheet.css` into `index.js`.
 import React from 'react'
 import ReactDOM from 'react-dom'
 import App from './App'
-import './Components/stylesheet.css'
+import './components/stylesheet.css'
 
 ReactDOM.render(<App/>, document.getElementById('root'));
+```
+
+### stylesheet.css
+
+Now we have done the core functions of the app to handle input and play a video url. Now we will do a little bit about css so that the interface would be more beautiful.
+
+Within the `components` folder, let's create a file named `stylesheet.css`. The following code is to set the UI of `h1` and `video-wrapper`.
+
+```css
+h1 {
+  text-align: center;
+}
+
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 30px;
+    height: 0;
+    border: 1px solid #d3d3d3;
+    overflow: hidden;
+}
+
+.video-wrapper iframe,
+.video-wrapper object,
+.video-wrapper embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
 ```
 Now you are good to go to next part: **Implementing the cognitive service**

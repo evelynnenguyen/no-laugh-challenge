@@ -3,6 +3,7 @@ import './components/stylesheet.css'
 import Displayer from './components/Displayer'
 import Title from './components/Title'
 import AddVideo from './components/AddVideo'
+import EmotionAnlysis from './components/EmotionAnalysis'
 
 class App extends Component {
     constructor() {
@@ -23,12 +24,14 @@ class App extends Component {
     render() {
         return (<div>
             <Title title={'No-Laugh Challenge'} />
+
             <AddVideo onAddVideo={(addedPost) => {
                 this.addVideo(addedPost)
-            }}/>
-            <div className = "video-wrapper">
+            }} />
+            <div className="video-wrapper">
                 <Displayer posts={this.state.posts} />
             </div>
+            <h1><EmotionAnlysis /></h1>
         </div>
         )
     }
